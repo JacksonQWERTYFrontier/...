@@ -1,0 +1,32 @@
+import board
+from analogio import AnalogIn
+import time
+import random
+import digitalio as dio
+import time
+from analogio import AnalogOut
+
+pot = AnalogIn(board.A1)
+analog_in = AnalogIn(board.A1)
+
+
+led = dio.DigitalInOut(board.LED)
+led.direction = dio.Direction.OUTPUT
+
+analog_out = AnalogOut(board.A0)
+
+
+def get_voltage(pin):
+    return (pin.value * 3.3) / 65536
+
+while True:
+    led.value = True
+    time.sleep(1)
+    led.value = False
+    time.sleep(0.001)
+    print(pot.value)
+    time.sleep(1)
+    for i in range(0, 65535, 64):
+        analog_out.value = i
+    print(analog_in.value)
+    time.sleep(0.1)
