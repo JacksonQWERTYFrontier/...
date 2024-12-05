@@ -1,32 +1,20 @@
 import board
-from analogio import AnalogIn
-import time
-import random
 import digitalio as dio
 import time
-from analogio import AnalogOut
-
-pot = AnalogIn(board.A1)
-analog_in = AnalogIn(board.A1)
-
+import board
+import pwmio
+from analogio import AnalogIn
 
 led = dio.DigitalInOut(board.LED)
 led.direction = dio.Direction.OUTPUT
 
-analog_out = AnalogOut(board.A0)
+# LED setup for most CircuitPython boards:
+# LED setup for QT Py M0:
+# led = pwmio.PWMOut(board.SCK, frequency=5000, duty_cycle=0)
+pot = AnalogIn(board.A1)
+led = pwmio.PWMOut(board.D0, frequency=5000, duty_cycle=0)
 
-
-def get_voltage(pin):
-    return (pin.value * 3.3) / 65536
+val = 65535
 
 while True:
-    led.value = True
-    time.sleep(1)
-    led.value = False
-    time.sleep(0.001)
-    print(pot.value)
-    time.sleep(1)
-    for i in range(0, 65535, 64):
-        analog_out.value = i
-    print(analog_in.value)
-    time.sleep(0.1)
+    led.duty_cycle = pot.value
